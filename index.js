@@ -95,4 +95,4 @@ var tu = require('tuiter')(config.keys);
 
 // Run the application. The callback in getListMembers ensures we get our list
 // of twitter streams before we attempt to listen to them via the twitter API.
-getListMembers(listen);
+//getListMembers(listen);

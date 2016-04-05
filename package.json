@@ -1,15 +1,15 @@
 {
-  "name": "twitter-listbot",
-  "description": "A robot that retweets the contents of a twitter list.",
+  "name": "yala-inspire",
+  "description": "A twitter bot that retweets inspirational tweets it finds.",
   "version": "0.0.1",
-  "homepage": "https://github.com/bryanbraun/twitter-listbot",
+  "homepage": "https://github.com/maryamklabib/yala-inspire",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/bryanbraun/twitter-listbot.git"
+    "url": "git://github.com/maryamklabib/yala-inspire.git"
   },
   "bugs": {
-    "url": "https://github.com/bryanbraun/twitter-listbot/issues"
+    "url": "https://github.com/maryamklabib/yala-inspire"
   },
   "dependencies": {
     "tuiter": "~0.2.12",
@@ -20,11 +20,6 @@
   "engines": {
     "node": "0.8.x",
     "npm": "1.1.x"
-  },
-  "author": {
-    "name": "Bryan Braun",
-    "email": "bbraun7@gmail.com",
-    "url": "http://www.bryanbraun.com"
   },
   "private": true,
   "license": "MIT"
