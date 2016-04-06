@@ -98,5 +98,6 @@ var tu = require('tuiter')(config.keys);
 
 //for now do bare minimum
 tu.retweet({
-    id: 12738165059
+    "resource": "https://api.twitter.com/1.1/statuses/retweet/717686980113408000",
+     "method": "post"
 }, onReTweet);
