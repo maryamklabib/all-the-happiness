@@ -98,5 +98,5 @@ var tu = require('tuiter')(config.keys);
 
 //for now do bare minimum
 tu.retweet({
-    id: "12738165059"
+    id: 12738165059
 }, onReTweet);
