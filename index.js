@@ -6,12 +6,10 @@ app.listen(process.env.PORT || 5000);
 // END HEROKU SETUP
 
 
-// Listbot config
-//
 // Config.keys uses environment variables so sensitive info is not in the repo.
 var config = {
     me: 'yalainspire', // The authorized account with a list to retweet.
-    myList: 'Testing', // The list we want to retweet.
+    // myList: 'Testing', // The list we want to retweet.
     regexFilter: '', // Accept only tweets matching this regex pattern.
     regexReject: '(RT|@)', // AND reject any tweets matching this regex pattern.
 
@@ -23,28 +21,27 @@ var config = {
     },
 };
 
+// // Get the members of our list, and pass them into a callback function.
+// function getListMembers(callback) {
+//     var memberIDs = [];
 
-// Get the members of our list, and pass them into a callback function.
-function getListMembers(callback) {
-    var memberIDs = [];
+//     tu.listMembers({owner_screen_name: config.me,
+//         slug: config.myList
+//     },
+//     function(error, data){
+//         if (!error) {
+//             for (var i=0; i < data.users.length; i++) {
+//                 memberIDs.push(data.users[i].id_str);
+//             }
 
-    tu.listMembers({owner_screen_name: config.me,
-        slug: config.myList
-    },
-    function(error, data){
-        if (!error) {
-            for (var i=0; i < data.users.length; i++) {
-                memberIDs.push(data.users[i].id_str);
-            }
-
-            // This callback is designed to run listen(memberIDs).
-            callback(memberIDs);
-        } else {
-            console.log(error);
-            console.log(data);
-        }
-    });
-}
+//             // This callback is designed to run listen(memberIDs).
+//             callback(memberIDs);
+//         } else {
+//             console.log(error);
+//             console.log(data);
+//         }
+//     });
+// }
 
 // What to do after we retweet something.
 function onReTweet(err) {
@@ -96,3 +93,10 @@ var tu = require('tuiter')(config.keys);
 // Run the application. The callback in getListMembers ensures we get our list
 // of twitter streams before we attempt to listen to them via the twitter API.
 //getListMembers(listen);
+//listen(); -> onTweet() -> onReTweet()
+
+
+//for now do bare minimum
+tu.retweet({
+    id: "12738165059"
+}, onReTweet);
