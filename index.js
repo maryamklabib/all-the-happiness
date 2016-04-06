@@ -18,8 +18,8 @@ var config = {
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
         access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
         access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-    },
-};
+	    },
+	};
 
 // // Get the members of our list, and pass them into a callback function.
 // function getListMembers(callback) {
@@ -77,12 +77,17 @@ function onTweet(tweet) {
 }
 
 // Function for listening to twitter streams and retweeting on demand.
-function listen(listMembers) {
-    tu.filter({
-        follow: listMembers
-    }, function(stream) {
+function listen() {
+    tu.filter({track: "happiness"}, function(stream) {
         console.log("listening to stream");
-        stream.on('tweet', onTweet);
+        stream.on('tweet', function(data) {
+        	console.log(data);
+        	onTweet;
+        });
+		setTimeout(function(){      
+			stream.emit('end');
+		}, 2 * 3 * 4);
+
     });
 }
 
@@ -93,10 +98,4 @@ var tu = require('tuiter')(config.keys);
 // Run the application. The callback in getListMembers ensures we get our list
 // of twitter streams before we attempt to listen to them via the twitter API.
 //getListMembers(listen);
-//listen(); -> onTweet() -> onReTweet()
-
-
-//for now do bare minimum
-tu.retweet({
-    id: "10765432100123456789"
-}, onReTweet);
+listen(); //-> onTweet() -> onReTweet()
