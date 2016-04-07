@@ -9,93 +9,40 @@ app.listen(process.env.PORT || 5000);
 // Config.keys uses environment variables so sensitive info is not in the repo.
 var config = {
     me: 'yalainspire', // The authorized account with a list to retweet.
-    // myList: 'Testing', // The list we want to retweet.
     regexFilter: '', // Accept only tweets matching this regex pattern.
     regexReject: '(RT|@)', // AND reject any tweets matching this regex pattern.
-
-    keys: {
-        consumer_key: process.env.TWITTER_CONSUMER_KEY,
-        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-        access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-        access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-	    },
 	};
 
-// // Get the members of our list, and pass them into a callback function.
-// function getListMembers(callback) {
-//     var memberIDs = [];
+var twit = require('twit');
+// var twitInfo = require('/Users/lababib/config.js');
+// var twitter = new twit(twitInfo);
+var twitter = new twit({
+	//credentials
+});
 
-//     tu.listMembers({owner_screen_name: config.me,
-//         slug: config.myList
-//     },
-//     function(error, data){
-//         if (!error) {
-//             for (var i=0; i < data.users.length; i++) {
-//                 memberIDs.push(data.users[i].id_str);
-//             }
+function find_tweet() {
+	tweet_str_id = '';
+	//get 100
+	twitter.get('search/tweets', { q: 'happiness', count: 100 }, function(err, data, response) {
+  	//iterate through them and check things
+	  	// console.log(data);
+	  	for (var i=0; i < data.statuses.length; i++) {
+				if (data.statuses[i].retweeted == true && data.statuses[i].favorited == true && data.statuses[i].retweet_count > 100 || data.statuses[i].favorite_count > 100) {
+					console.log(data.statuses[i].retweeted);
+				  	console.log(data.statuses[i].favorited);
+				  	console.log(data.statuses[i].text);
+					tweet_str_id = data.statuses[i].id_str;
+				}
+			}
+	})
+	retweet(tweet_str_id);
+};
 
-//             // This callback is designed to run listen(memberIDs).
-//             callback(memberIDs);
-//         } else {
-//             console.log(error);
-//             console.log(data);
-//         }
-//     });
-// }
+function retweet(tweet_id) {
+	twitter.post('statuses/retweet/' + tweet_id, function (err, data, response) {
+  	console.log(data);
+});	
+};
 
-// What to do after we retweet something.
-function onReTweet(err) {
-    if(err) {
-        console.error("retweeting failed :(");
-        console.error(err);
-    }
-}
-
-// What to do when we get a tweet.
-function onTweet(tweet) {
-    // Reject the tweet if:
-    //  1. it's flagged as a retweet
-    //  2. it matches our regex rejection criteria
-    //  3. it doesn't match our regex acceptance filter
-    var regexReject = new RegExp(config.regexReject, 'i');
-    var regexFilter = new RegExp(config.regexFilter, 'i');
-    if (tweet.retweeted) {
-        return;
-    }
-    if (config.regexReject !== '' && regexReject.test(tweet.text)) {
-        return;
-    }
-    if (regexFilter.test(tweet.text)) {
-        console.log(tweet);
-        console.log("RT: " + tweet.text);
-        // Note we're using the id_str property since javascript is not accurate
-        // for 64bit ints.
-        tu.retweet({
-            id: tweet.id_str
-        }, onReTweet);
-    }
-}
-
-// Function for listening to twitter streams and retweeting on demand.
-function listen() {
-    tu.filter({track: "happiness"}, function(stream) {
-        console.log("listening to stream");
-        stream.on('tweet', function(data) {
-        	console.log(data);
-        	onTweet;
-        });
-		setTimeout(function(){      
-			stream.emit('end');
-		}, 2 * 3 * 4);
-
-    });
-}
-
-// The application itself.
-// Use the tuiter node module to get access to twitter.
-var tu = require('tuiter')(config.keys);
-
-// Run the application. The callback in getListMembers ensures we get our list
-// of twitter streams before we attempt to listen to them via the twitter API.
-//getListMembers(listen);
-listen(); //-> onTweet() -> onReTweet()
+//Every 10 minutes, call search_tweets_and_return_ids
+find_tweet();

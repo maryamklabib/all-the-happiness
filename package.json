@@ -12,8 +12,9 @@
     "url": "https://github.com/maryamklabib/yala-inspire"
   },
   "dependencies": {
+    "express": "~4.9.0",
     "tuiter": "~0.2.12",
-    "express": "~4.9.0"
+    "twit": "^2.2.3"
   },
   "devDependencies": {},
   "optionalDependencies": {},
