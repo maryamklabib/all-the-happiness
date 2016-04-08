@@ -33,11 +33,17 @@ function find_tweet() {
   					tweet_id_str = data.statuses[i].id_str;
   					console.log(data.statuses[i].text);
   					console.log(data.statuses[i].favorite_count); 
+  					console.log(data.statuses[i].id_str);
   				}
   			}
 				}
+	}).catch(function (err) {
+    	console.log('caught error', err.stack)
+  	}).then(function () {
+		console.log('final');
+		console.log(tweet_id_str);
+	 	retweet(tweet_id_str);		
 	})
-	 //retweet(tweet_id_str);
 };
 
 function retweet(tweet_id) {
