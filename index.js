@@ -21,21 +21,23 @@ var twitter = new twit({
 });
 
 function find_tweet() {
-	tweet_str_id = '';
-	//get 100
-	twitter.get('search/tweets', { q: 'happiness', count: 100 }, function(err, data, response) {
+	console.log('hi');
+	var max_fav = 0;
+	var tweet_id_str = '';
+	twitter.get('search/tweets', { q: 'to find happiness', count: 100 }, function(err, data, response) {
   	//iterate through them and check things
-	  	// console.log(data);
 	  	for (var i=0; i < data.statuses.length; i++) {
-				if (data.statuses[i].retweeted == true && data.statuses[i].favorited == true && data.statuses[i].retweet_count > 100 || data.statuses[i].favorite_count > 100) {
-					console.log(data.statuses[i].retweeted);
-				  	console.log(data.statuses[i].favorited);
-				  	console.log(data.statuses[i].text);
-					tweet_str_id = data.statuses[i].id_str;
+  			if (data.statuses[i].text.slice(0,2) != 'RT') {
+  				if (data.statuses[i].favorite_count > max_fav) {
+  					max_fav = data.statuses[i].favorite_count;
+  					tweet_id_str = data.statuses[i].id_str;
+  					console.log(data.statuses[i].text);
+  					console.log(data.statuses[i].favorite_count); 
+  				}
+  			}
 				}
-			}
 	})
-	retweet(tweet_str_id);
+	 //retweet(tweet_id_str);
 };
 
 function retweet(tweet_id) {
