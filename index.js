@@ -14,34 +14,34 @@ var config = {
 	};
 
 var twit = require('twit');
-// var twitInfo = require('/Users/lababib/config.js');
-// var twitter = new twit(twitInfo);
-var twitter = new twit({
-	//credentials
-});
+var twitInfo = require('./config.js');
+var twitter = new twit(twitInfo);
+var latest_twitter_id = "718474746355036161";
 
 function find_tweet() {
 	console.log('hi');
 	var max_fav = 0;
 	var tweet_id_str = '';
-	twitter.get('search/tweets', { q: 'to find happiness', count: 100 }, function(err, data, response) {
-  	//iterate through them and check things
+	twitter.get('search/tweets', { q: 'happiness', result_type: "popular", lang: 'en', count: 100, max_id: latest_twitter_id }, function(err, data, response) {
 	  	for (var i=0; i < data.statuses.length; i++) {
   			if (data.statuses[i].text.slice(0,2) != 'RT') {
   				if (data.statuses[i].favorite_count > max_fav) {
+  					//did we tweet this before?
   					max_fav = data.statuses[i].favorite_count;
   					tweet_id_str = data.statuses[i].id_str;
   					console.log(data.statuses[i].text);
   					console.log(data.statuses[i].favorite_count); 
   					console.log(data.statuses[i].id_str);
+  					console.log('retweeted? : ' + data.statuses[i].retweeted); 
   				}
   			}
 				}
 	}).catch(function (err) {
     	console.log('caught error', err.stack)
   	}).then(function () {
+  		latest_twitter_id = tweet_id_str;
 		console.log('final');
-		console.log(tweet_id_str);
+		console.log("id_str: " + tweet_id_str);
 	 	retweet(tweet_id_str);		
 	})
 };
