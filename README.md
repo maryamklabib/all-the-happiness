@@ -15,7 +15,7 @@ Huge shoutout to [bryanbraun](https://github.com/bryanbraun/twitter-listbot) for
 Huge shoutout to programmers that contribute to Node.js.
 
 ##To Do
-- [ ] every ten minutes retweet a tweet
+- [x] every ten minutes retweet a tweet
 - [ ] check that its a tweet we have never retweeted before
 - [ ] validate tweet against filter/reject rejex expressions
 - [ ] update bio to say that its a bot
