@@ -19,5 +19,5 @@ Huge shoutout to programmers that contribute to Node.js.
 - [ ] check that its a tweet we have never retweeted before
 - [ ] validate tweet against filter/reject rejex expressions
 - [ ] update bio to say that its a bot
-- [ ] dont retweet a quote to a tweet?
+- [ ] dont retweet a quote to a tweet or has a picture?
 - [x] optimize for high favorites in search query
