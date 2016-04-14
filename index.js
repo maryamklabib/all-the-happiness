@@ -46,10 +46,9 @@ function retweet(tweet_id) {
 	twitter.post('statuses/retweet/' + tweet_id, 
 		function (err, data, response) {
   			console.log(data);
-		}.catch(function (err) {
+		}).catch(function (err) {
     		console.log('error ', err.stack);
-  		}));	
-	};
+  		})};
 
 //Every 20 minutes, call find_tweet and retweet the most favorited tweet since the last tweet we retweeted.
 find_tweet();
