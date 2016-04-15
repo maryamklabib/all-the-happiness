@@ -1,5 +1,5 @@
 # yala-inspire
-A twitter bot to make people happy.
+####A twitter bot to make people happy. Follow [@yalainspire](https://twitter.com/yalainspire) today!
 
 ## Setup Your Own
 1. [Install node.js & npm](http://nodejs.org/download/).
