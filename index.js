@@ -9,37 +9,35 @@ var twit = require('twit');
 var twitInfo = require('./config.js');
 var twitter = new twit(twitInfo);
 
-var config = {
-    filter: 'happiness',
-    reject: '(RT|@)',
-    words: 'happiness',
-    result_type: 'recent',
-    lang: 'en',
-    count: 100,
-	};
-
 function can_retweet(tweet_info) {
-	return tweet_info.text.match(config.filter)
-	&& !tweet_info.text.match(config.reject)
-	&& !tweet_info.retweeted;
+	return tweet_info.entities.hashtags.length == 0
+	&& tweet_info.entities.user_mentions.length == 0
+	&& tweet_info.entities.media == undefined
+	&& tweet_info.entities.urls.length == 0
+	&& tweet_info.entities.symbols.length == 0
+	&& tweet_info.retweeted == false;
 }
 
 function find_tweet() {
-	var tweet_id_str = "";
 	twitter.get('search/tweets', { 
-		q: config.words, 
-		result_type: config.result_type, 
-		lang: config.lang, 
-		count: config.count
+		q: 'happiness',
+		count: 100, 
+		result_type: 'recent', 
+		lang: 'en',
 	}, function(err, data, response) {
-		fc = Math.max.apply(Math,data.statuses.map(function(s){return s.favorite_count;}));
-		tweet_id_str = data.statuses.find(function(s){ return s.favorite_count == fc; }).id_str;
+		var retweetable = [];
+		for (var i = 0; i < data.statuses.length; i++) {
+			if (can_retweet(data.statuses[i])) {
+				retweetable.push(data.statuses[i]);
+			}	
+		}
+		if (retweetable.length != 0) {
+			fc = Math.max.apply(Math,retweetable.map(function(s){return s.favorite_count;}));
+			retweet(retweetable.find(function(s){ return s.favorite_count == fc; }).id_str);
+		}
 	}).catch(function (err) {
     	console.log('error ', err.stack);
-  	}).then(function () {
-  		latest_twitter_id = tweet_id_str;
-	 	retweet(tweet_id_str);		
-	})
+  	})
 };
 
 function retweet(tweet_id) {
